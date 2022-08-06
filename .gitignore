@@ -1,0 +1,12 @@
+.Rproj.user
+.Rhistory
+.Rdata
+.httr-oauth
+.DS_Store
+*.Rproj
+*.bak
+.gitattributes
+inst/doc
+~*
+doc
+Meta

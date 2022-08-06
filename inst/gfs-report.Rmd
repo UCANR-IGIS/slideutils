@@ -1,0 +1,76 @@
+---
+title: "`r params$rpt_title`"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+params:
+   rpt_elemnts: NA
+   rpt_title: "Google Form Summary"
+output: html_document
+
+---
+
+```{css echo = FALSE}
+h1 {
+  font-weight:bold;
+  font-size:26px;
+  color:#3c763d;
+  margin-top:2em;
+}
+h1.title {
+  font-size:30px;
+  color:black;
+}
+h2 {
+  font-weight:bold;
+  font-size:22px;
+  color:#286090;
+}
+h3, p.qtext {
+  font-weight:bold;
+  font-size:18px;
+  margin-top:2em;
+}
+h4.date {
+  font-size:90%;
+  color:#444;
+  font-style:italic;
+}
+p.qtext1 {
+  font-size:18px;
+  font-weight:bold;
+  font-style:italic;
+  margin-top:2em;
+  color:#286090;
+}
+p.desc {
+  color:black;
+  font-size:14px;
+}
+p.howmany {
+  color:black;
+  font-size:14px;
+  font-style:italic;
+  color:#286090;
+}
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(htmltools)
+library(knitr)
+library(leaflet)
+```
+
+```{r echo = FALSE}
+html_taglist <- wu_gfr_taglist(params$rpt_elemnts)
+
+## Print all the HTML tags outside the loop so they are at the top level
+htmltools::tagList(html_taglist)
+
+```
+
+<p>&nbsp;</p>
+
+<p style="color:#444; font-style:italic; font-size:90%; text-align:right; border-top:1px solid #888; padding-top:0.5em;">Created with <a href="https://github.com/ucanr-igis/wrkshputils/" target="_blank" rel="noopener">Workshop Utilities for R</a> by <a href="https://igis.ucanr.edu/" target="_blank" rel="noopener">IGIS</a></p>
+
+<p>&nbsp;</p>

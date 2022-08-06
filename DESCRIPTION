@@ -1,0 +1,36 @@
+Package: slideutils
+Type: Package
+Title: R Markdown Slide Utilities
+Version: 0.1.0
+Date: 2022-08-06
+Authors@R: c(person(given = "Andy",
+                  family = "Lyons", 
+                  role = c("aut", "cre"),
+                  email = "andlyons@ucanr.edu", 
+                  comment = c(ORCID = "0000-0002-7505-6709")),
+            person(given = "Regents of the University of California",
+                   role = "cph"))
+BugReports: https://github.com/ucanr-igis/slideutils/issues
+URL: https://github.com/ucanr-igis/slideutils
+Description: Utilities for creating R Markdown Slides.
+License: GPL (>= 3)
+Depends: 
+    R (>= 3.6)
+Imports: 
+    magrittr,
+    dplyr,
+    htmltools,
+    crayon,
+    knitr,
+    ggplot2,
+    magick,
+    rmarkdown
+Suggests: 
+    leaflet,
+    testthat (>= 3.0.0)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = FALSE)
+RoxygenNote: 7.2.1
+VignetteBuilder: knitr
+Config/testthat/edition: 3
