@@ -9,15 +9,19 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 <!-- badges: end -->
 
 R Markdown Slide Utilities contains functions you can use to add custom
-content to RMarkdown slide decks, including:
+content to R Markdown slide decks, including:
 
--   Image builds from a series of PNG files
+-   Generate image builds from a series of PNG files
 
--   Summary charts from a Google Form survey
+-   Embed summary charts from a Google Form survey
 
--   Emojis
+-   Add emojis with quotations
 
--   Customized SVGs from DiagrammeR
+-   Generate small HTML pages for exercise hints and solutions,
+    populated by a Google Sheet, with an option to create bitly links to
+    insert in a Rmd or R file
+
+-   Customize the CSS of SVGs created by DiagrammeR (*coming soon*)
 
   
 
@@ -44,15 +48,6 @@ To see if its working:
 
 These utilities were originally part of the
 [`wrkshputils`](https://github.com/ucanr-igis/wrkshputils) package. They
-were split off into their own package mostly to make `wrkshputils` and
-because these functions only apply to slide content creators.
-
-# TODO
-
-that collectively represent a slide build, and i) make white pixels
-transparent (so they can be overlaid), and ii) generate HTML tags that
-can be inserted into a R Markdown HTML slide deck to animate the build.
-
-Create HTML pages containing hints and tips, populated by a Google
-Sheet, that can be embedded in a R Notebook as hints and solutions.
-Option to create bitly links.
+were split off into their own package mostly to make `wrkshputils`
+lighter, and because the functions in slideutils are generally only
+needed by slide content creators.
