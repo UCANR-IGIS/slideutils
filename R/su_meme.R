@@ -4,7 +4,7 @@
 #' @param height The image height (keyword or number)
 #' @param quote_main The main quote (character)
 #' @param data_uri Return a URI for the image instead of a file name (logical)
-#' @param img_path The path to the image (ignored if data_uri is TRUE)
+#' @param img_path The relative path from the HTML file to the image (ignored if data_uri is TRUE)
 #' @param copy_to A directory to copy the image to if needed
 #' @param tbl_width_px Table width in pixels
 #' @param tbl_border_css CSS for the table border property
@@ -20,6 +20,9 @@
 #' \code{height} can be a keyword \code{small|medium|large}, which will make the meme image appear 160, 240, or 320 pixels
 #' tall respectively. Or you can pass an integer. The width will be scaled automatically.
 #'
+#' Note that \code{img_path} is not the path to the image from the active directory, but rather the relative path
+#' from the HTML file being rendered to the image. It will be added to the src attribute of the img tag.
+#'
 #' @returns html object
 #'
 #' @examples
@@ -28,6 +31,8 @@
 #' }
 #'
 #' @importFrom htmltools HTML
+#' @importFrom magick image_info image_resize image_read image_write
+#' @importFrom knitr image_uri
 #' @export
 
 ## TO DO
@@ -35,16 +40,12 @@
 ## add a layout attribute: side-by-side
 ## dynamically adjust the column width of the meme column based on the image size
 
-
 su_meme <- function(meme = "yoda-sage", height = c("small", "medium", "large")[2], quote_main = NULL,
                     data_uri = FALSE, img_path = "./images/", copy_to = NULL,
                     tbl_width_px = 640, tbl_border_css = "none", tbl_margin_css = "0 auto",
                     font_size_css = "100%", font_color_css = "black",
                     img_boxshadow_css = c("none", "0px 0px 5px 1px #555")[1], img_borderradius_css = c("0", "5px")[1],
                     debug = FALSE) {
-
-  if (!requireNamespace("magick", quietly = TRUE)) stop("Sorry, this function requires the magick package. Please install it then try again.")
-  if (!requireNamespace("knitr", quietly = TRUE)) stop("Sorry, this function requires the knitr package.")
 
   if (!meme %in% c("yoda-sage", "face-frustrated")) stop("Unknown value for `meme` argument")
 
@@ -74,32 +75,31 @@ su_meme <- function(meme = "yoda-sage", height = c("small", "medium", "large")[2
     }
   }
 
-
   ## Get the file name to the image in the package
-  img_in_fn <- list.files(system.file(package = "slideutils"),
+  img_in_fns <- list.files(system.file("memes", package = "slideutils"),
                        pattern = paste0("^", meme), full.names = TRUE)
 
   if (length(img_in_fn) != 1) stop("Can't find meme image")
 
   ## Read in the package image
-  img_in_magk <- magick::image_read(img_in_fn)
+  img_in_magk <- image_read(img_in_fn)
 
   ## Get the package image dimensions
-  img_in_dim_tbl <- magick::image_info(img_in_magk)[1, c("width", "height")]
+  img_in_dim_tbl <- image_info(img_in_magk)[1, c("width", "height")]
 
   ## Resize the image if needed
   if (img_in_dim_tbl$height == height_use) {
     img_out_magk <- img_in_magk
-    img_out_dim_tbl <- magick::image_info(img_out_magk)[1, c("width", "height")]
+    img_out_dim_tbl <- image_info(img_out_magk)[1, c("width", "height")]
   } else {
-    img_out_magk <- magick::image_resize(img_in_magk, geometry = paste0("x", height_use))
-    img_out_dim_tbl <- magick::image_info(img_out_magk)[1, c("width", "height")]
+    img_out_magk <- image_resize(img_in_magk, geometry = paste0("x", height_use))
+    img_out_dim_tbl <- image_info(img_out_magk)[1, c("width", "height")]
   }
 
   ## Get the data uri or copy the file to copy_to
   if (data_uri) {
     img_tmp_fn <- tempfile(fileext = paste0(".", file_ext(img_in_fn)))
-    magick::image_write(img_out_magk, path = img_tmp_fn)
+    image_write(img_out_magk, path = img_tmp_fn)
     on.exit(unlink(img_tmp_fn))
     img_uri <- knitr::image_uri(img_tmp_fn)
     #stop("Sorry, data_uri is not yet supported")
@@ -112,7 +112,7 @@ su_meme <- function(meme = "yoda-sage", height = c("small", "medium", "large")[2
 
     img_out_pathfn <- file.path(copy_to, img_out_fn)
 
-    if (!file.exists(img_out_pathfn)) magick::image_write(img_out_magk, path = img_out_pathfn)
+    if (!file.exists(img_out_pathfn)) image_write(img_out_magk, path = img_out_pathfn)
 
     #file.copy(from = img_in_fn, to = copy_to, overwrite = FALSE)
 

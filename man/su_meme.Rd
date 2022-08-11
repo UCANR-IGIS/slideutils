@@ -30,7 +30,7 @@ su_meme(
 
 \item{data_uri}{Return a URI for the image instead of a file name (logical)}
 
-\item{img_path}{The path to the image (ignored if data_uri is TRUE)}
+\item{img_path}{The relative path from the HTML file to the image (ignored if data_uri is TRUE)}
 
 \item{copy_to}{A directory to copy the image to if needed}
 
@@ -61,6 +61,9 @@ This will return an HTML object that can be printed in a RMarkdown.
 
 \code{height} can be a keyword \code{small|medium|large}, which will make the meme image appear 160, 240, or 320 pixels
 tall respectively. Or you can pass an integer. The width will be scaled automatically.
+
+Note that \code{img_path} is not the path to the image from the active directory, but rather the relative path
+from the HTML file being rendered to the image. It will be added to the src attribute of the img tag.
 }
 \examples{
 \dontrun{

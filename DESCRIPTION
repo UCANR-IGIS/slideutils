@@ -1,8 +1,8 @@
 Package: slideutils
 Type: Package
 Title: R Markdown Slide Utilities
-Version: 0.1.0
-Date: 2022-08-06
+Version: 0.1.1
+Date: 2022-08-11
 Authors@R: c(person(given = "Andy",
                   family = "Lyons", 
                   role = c("aut", "cre"),
@@ -24,9 +24,11 @@ Imports:
     knitr,
     ggplot2,
     magick,
+    googlesheets4,
     rmarkdown
 Suggests: 
     leaflet,
+    urlshorteneR,
     testthat (>= 3.0.0)
 Encoding: UTF-8
 LazyData: true
