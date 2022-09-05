@@ -33,6 +33,7 @@
 #' @importFrom htmltools HTML
 #' @importFrom magick image_info image_resize image_read image_write
 #' @importFrom knitr image_uri
+#' @importFrom tools file_ext
 #' @export
 
 ## TO DO
@@ -76,10 +77,10 @@ su_meme <- function(meme = "yoda-sage", height = c("small", "medium", "large")[2
   }
 
   ## Get the file name to the image in the package
-  img_in_fns <- list.files(system.file("memes", package = "slideutils"),
+  img_in_fn <- list.files(system.file("memes", package = "slideutils"),
                        pattern = paste0("^", meme), full.names = TRUE)
 
-  if (length(img_in_fn) != 1) stop("Can't find meme image")
+  if (length(img_in_fn) != 1) stop(paste0("Can't find meme image: ", meme))
 
   ## Read in the package image
   img_in_magk <- image_read(img_in_fn)

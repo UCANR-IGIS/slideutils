@@ -1,8 +1,8 @@
 Package: slideutils
 Type: Package
 Title: R Markdown Slide Utilities
-Version: 0.1.1
-Date: 2022-08-11
+Version: 0.1.2
+Date: 2022-09-05
 Authors@R: c(person(given = "Andy",
                   family = "Lyons", 
                   role = c("aut", "cre"),
