@@ -41,16 +41,37 @@
 ## add a layout attribute: side-by-side
 ## dynamically adjust the column width of the meme column based on the image size
 
-su_meme <- function(meme = "yoda-sage", height = c("small", "medium", "large")[2], quote_main = NULL,
+su_meme <- function(meme = "yoda-sage", height = c("small", "medium", "large", "default")[2],
+                    quote_main = NULL,
                     data_uri = FALSE, img_path = "./images/", copy_to = NULL,
                     tbl_width_px = 640, tbl_border_css = "none", tbl_margin_css = "0 auto",
                     font_size_css = "100%", font_color_css = "black",
-                    img_boxshadow_css = c("none", "0px 0px 5px 1px #555")[1], img_borderradius_css = c("0", "5px")[1],
+                    img_boxshadow_css = c("none", "0px 0px 5px 1px #555")[1],
+                    img_borderradius_css = c("0", "5px")[1],
                     debug = FALSE) {
 
-  if (!meme %in% c("yoda-sage", "face-frustrated")) stop("Unknown value for `meme` argument")
+  ## Get the available meme images that come with the package
+  meme_imgs_fn <- list.files(system.file("memes", package = "slideutils"), full.names = TRUE)
 
-  ## copy_to or data_uri = TRUE
+  ## Get the meme names (file names with no extension)
+  memes_available <- gsub("\\..{3}$", "", basename(meme_imgs_fn))
+
+  ## Check to make sure the requested meme exists
+  if (!meme %in% memes_available) stop(paste0("Unknown value for `meme` argument. Available choices include: ",
+                                              paste(memes_available, collapse = ", ")))
+
+  ## Get the specific image fn we're going to use
+  img_in_fn <- meme_imgs_fn[memes_available == meme]
+
+  #if (length(img_in_fn) != 1) stop(paste0("Can't find meme image: ", meme))
+
+  ## Read in the package image
+  img_in_magk <- image_read(img_in_fn)
+
+  ## Get the package image dimensions
+  img_in_dim_tbl <- image_info(img_in_magk)[1, c("width", "height")]
+
+  ## Check values of copy_to and data_uri
   if (is.null(copy_to)) {
     if (!data_uri) stop("You must either provide a value for `copy_to`, or else set data_uri = TRUE")
   } else {
@@ -59,14 +80,21 @@ su_meme <- function(meme = "yoda-sage", height = c("small", "medium", "large")[2
 
   ## Compute the meme output height
   if (is.null(height)) {
-    stop("Height should be a small|medium|large or a number of pixels")
+    stop("Height should be a small|medium|large|default, or a number of pixels")
 
   } else {
-    err_msg <- "Unknown value for `height` argument. Valid values are small, medium, large, or number of pixels"
+    err_msg <- "Unknown value for `height` argument. Valid values are 'small', 'medium', 'large', 'default', or number of pixels"
 
     if (is.character(height)) {
-      if (!height %in% c("small", "medium", "large")) stop(err_msg)
-      height_use <- list(large = 320, medium = 240, small = 160)[[height]]
+      if (height %in% c("small", "medium", "large")) {
+        height_use <- list(large = 320, medium = 240, small = 160)[[height]]
+
+      } else if (height == "default") {
+        height_use <- img_in_dim_tbl$height
+
+      } else {
+        stop(err_msg)
+      }
 
     } else if (is.numeric(height)) {
       height_use <- height
@@ -75,18 +103,6 @@ su_meme <- function(meme = "yoda-sage", height = c("small", "medium", "large")[2
       stop(err_msg)
     }
   }
-
-  ## Get the file name to the image in the package
-  img_in_fn <- list.files(system.file("memes", package = "slideutils"),
-                       pattern = paste0("^", meme), full.names = TRUE)
-
-  if (length(img_in_fn) != 1) stop(paste0("Can't find meme image: ", meme))
-
-  ## Read in the package image
-  img_in_magk <- image_read(img_in_fn)
-
-  ## Get the package image dimensions
-  img_in_dim_tbl <- image_info(img_in_magk)[1, c("width", "height")]
 
   ## Resize the image if needed
   if (img_in_dim_tbl$height == height_use) {

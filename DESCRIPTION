@@ -1,8 +1,8 @@
 Package: slideutils
 Type: Package
 Title: R Markdown Slide Utilities
-Version: 0.1.2
-Date: 2022-09-05
+Version: 0.1.4
+Date: 2023-03-09
 Authors@R: c(person(given = "Andy",
                   family = "Lyons", 
                   role = c("aut", "cre"),
@@ -33,6 +33,6 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = FALSE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Config/testthat/edition: 3

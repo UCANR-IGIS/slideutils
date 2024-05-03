@@ -62,7 +62,7 @@ library(leaflet)
 ```
 
 ```{r echo = FALSE}
-html_taglist <- wu_gfr_taglist(params$rpt_elemnts)
+html_taglist <- su_gfr_taglist(params$rpt_elemnts)
 
 ## Print all the HTML tags outside the loop so they are at the top level
 htmltools::tagList(html_taglist)

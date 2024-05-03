@@ -6,7 +6,7 @@
 \usage{
 su_meme(
   meme = "yoda-sage",
-  height = c("small", "medium", "large")[2],
+  height = c("small", "medium", "large", "default")[2],
   quote_main = NULL,
   data_uri = FALSE,
   img_path = "./images/",
